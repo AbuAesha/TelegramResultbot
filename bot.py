@@ -69,7 +69,9 @@ async def grade(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 # ================== MAIN ==================
-def main():
+import asyncio
+
+async def main():
 
     if not TOKEN:
         raise ValueError("BOT_TOKEN environment variable not set")
@@ -81,7 +83,12 @@ def main():
 
     print("Telegram Result Bot is running...")
 
-    app.run_polling()
+    await app.initialize()
+    await app.start()
+    await app.updater.start_polling()
+
+    while True:
+        await asyncio.sleep(3600)
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
